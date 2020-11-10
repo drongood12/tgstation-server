@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -18,7 +18,7 @@ namespace Tgstation.Server.Host.Components.Chat.Commands
 		public string Name => "byond";
 
 		/// <inheritdoc />
-		public string HelpText => "Displays the running Byond version. Use --active for the version used in future deployments";
+		public string HelpText => "Отображает текущую версию Byond. Используйте --active для версии, используемой в будущих развертываниях.";
 
 		/// <inheritdoc />
 		public bool AdminOnly => false;
@@ -48,9 +48,9 @@ namespace Tgstation.Server.Host.Components.Chat.Commands
 		public Task<string> Invoke(string arguments, ChatUser user, CancellationToken cancellationToken)
 		{
 			if (arguments.Split(' ').Any(x => x.ToUpperInvariant() == "--ACTIVE"))
-				return Task.FromResult(byondManager.ActiveVersion == null ? "None!" : String.Format(CultureInfo.InvariantCulture, "{0}.{1}", byondManager.ActiveVersion.Major, byondManager.ActiveVersion.Minor));
+				return Task.FromResult(byondManager.ActiveVersion == null ? "Ничего!" : String.Format(CultureInfo.InvariantCulture, "{0}.{1}", byondManager.ActiveVersion.Major, byondManager.ActiveVersion.Minor));
 			if (watchdog.Status == WatchdogStatus.Offline)
-				return Task.FromResult("Server offline!");
+				return Task.FromResult("Сервер выключен!");
 			return Task.FromResult(watchdog.ActiveCompileJob.ByondVersion);
 		}
 	}

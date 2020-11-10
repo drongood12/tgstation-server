@@ -78,7 +78,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 			initialConnectionTcs = new TaskCompletionSource<object>();
 			reconnectTaskLock = new object();
 
-			logger.LogTrace("Created.");
+			logger.LogTrace("Создано.");
 		}
 
 		/// <inheritdoc />
@@ -108,7 +108,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 		{
 			Disposed = true;
 			await StopReconnectionTimer().ConfigureAwait(false);
-			Logger.LogTrace("Disposed");
+			Logger.LogTrace("Утилизировано");
 		}
 
 		/// <summary>
@@ -131,7 +131,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 			if (Connected)
 			{
 				await DisconnectImpl(cancellationToken).ConfigureAwait(false);
-				Logger.LogTrace("Disconnected");
+				Logger.LogTrace("Отключен");
 			}
 
 			await StopReconnectionTimer().ConfigureAwait(false);
@@ -181,7 +181,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 		public Task SetReconnectInterval(uint reconnectInterval, bool connectNow)
 		{
 			if (reconnectInterval == 0)
-				throw new ArgumentOutOfRangeException(nameof(reconnectInterval), reconnectInterval, "Reconnect interval cannot be zero!");
+				throw new ArgumentOutOfRangeException(nameof(reconnectInterval), reconnectInterval, "Интервал повторного подключения не может быть нулевым!");
 
 			Task stopOldTimerTask;
 			lock (reconnectTaskLock)

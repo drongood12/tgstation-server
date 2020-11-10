@@ -126,7 +126,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 			client = new IrcFeatures
 			{
 				SupportNonRfc = true,
-				CtcpUserInfo = "You are going to play. And I am going to watch. And everything will be just fine...",
+				CtcpUserInfo = "Ты будешь играть. И я буду смотреть. И все будет хорошо ...",
 				AutoRejoin = true,
 				AutoRejoinOnKick = true,
 				AutoRelogin = true,
@@ -246,7 +246,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 
 				cancellationToken.ThrowIfCancellationRequested();
 
-				Logger.LogTrace("Authenticating ({0})...", passwordType);
+				Logger.LogTrace("Аутентификация ({0})...", passwordType);
 				switch (passwordType)
 				{
 					case IrcPasswordType.Server:
@@ -267,7 +267,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 				}
 
 				cancellationToken.ThrowIfCancellationRequested();
-				Logger.LogTrace("Processing initial messages...");
+				Logger.LogTrace("Обработка начальных сообщений...");
 				await NonBlockingListen(cancellationToken).ConfigureAwait(false);
 
 				var nickCheckCompleteTcs = new TaskCompletionSource<object>();
@@ -276,7 +276,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 					listenTask = Task.Factory.StartNew(
 					async () =>
 					{
-						Logger.LogTrace("Entering nick check loop");
+						Logger.LogTrace("Вход в цикл проверки ников");
 						while (!disconnecting && client.IsConnected && client.Nickname != nickname)
 						{
 							client.ListenOnce(true);
@@ -291,17 +291,17 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 
 						nickCheckCompleteTcs.TrySetResult(null);
 
-						Logger.LogTrace("Starting blocking listen...");
+						Logger.LogTrace("Запуск блокировки прослушивания...");
 						try
 						{
 							client.Listen();
 						}
 						catch (Exception ex)
 						{
-							Logger.LogWarning(ex, "IRC Main Listen Exception!");
+							Logger.LogWarning(ex, "Исключение основного прослушивания IRC!");
 						}
 
-						Logger.LogTrace("Exiting listening task...");
+						Logger.LogTrace("Выход из задачи прослушивания ...");
 					},
 					cancellationToken,
 					DefaultIOManager.BlockingTaskCreationOptions,
@@ -310,7 +310,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 					await nickCheckCompleteTcs.Task.ConfigureAwait(false);
 				}
 
-				Logger.LogTrace("Connection established!");
+				Logger.LogTrace("Соединение установлено!");
 			}
 			catch (OperationCanceledException)
 			{
@@ -336,7 +336,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 				}
 				catch (Exception ex)
 				{
-					Logger.LogWarning(ex, "IRC Non-Blocking Listen Exception!");
+					Logger.LogWarning(ex, "Исключение неблокирующего прослушивания IRC!");
 				}
 			},
 			cancellationToken,
@@ -611,7 +611,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 				channelId,
 				String.Format(
 					CultureInfo.InvariantCulture,
-					"DM: Deploying revision: {0}{1}{2} BYOND Version: {3}{4}",
+					"DM: Развертывание ревизии: {0}{1}{2} BYOND Версия: {3}{4}",
 					commitInsert,
 					testmergeInsert,
 					remoteCommitInsert,
@@ -625,7 +625,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 
 			return (errorMessage, dreamMakerOutput) => SendMessage(
 				channelId,
-				$"DM: Deployment {(errorMessage == null ? "complete" : "failed")}!",
+				$"DM: Развертывание {(errorMessage == null ? "complete" : "failed")}!",
 				cancellationToken);
 		}
 	}

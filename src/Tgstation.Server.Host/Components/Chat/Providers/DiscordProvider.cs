@@ -27,7 +27,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 			get
 			{
 				if (!Connected)
-					throw new InvalidOperationException("Provider not connected");
+					throw new InvalidOperationException("Провайдер не подключен...");
 				return NormalizeMentions(client.CurrentUser.Mention);
 			}
 		}
@@ -116,7 +116,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 			void StartTyping() => typingState = e.Channel.EnterTypingState();
 			try
 			{
-				if (basedMeme && e.Content.Equals("Based on what?", StringComparison.OrdinalIgnoreCase))
+				if (basedMeme && e.Content.Equals("Рабоатет на чем?", StringComparison.OrdinalIgnoreCase))
 				{
 					StartTyping();
 
@@ -145,10 +145,10 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 				{
 					if (mentionedUs)
 					{
-						Logger.LogTrace("Ignoring mention from {0} ({1}) by {2} ({3}). Channel not mapped!", e.Channel.Id, e.Channel.Name, e.Author.Id, e.Author.Username);
+						Logger.LogTrace("Игнорирую упоминание из {0} ({1}) от {2} ({3}). Канал небыл записан!", e.Channel.Id, e.Channel.Name, e.Author.Id, e.Author.Username);
 
 						// DCT: None available
-						await SendMessage(e.Channel.Id, "I do not respond to this channel!", default).ConfigureAwait(false);
+						await SendMessage(e.Channel.Id, "Прости мой друг,я не отвечаю в этом канале.Спрашивай м-м-м в другом канале!", default).ConfigureAwait(false);
 					}
 
 					return;
@@ -191,12 +191,12 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 			{
 				await client.LoginAsync(TokenType.Bot, botToken, true).ConfigureAwait(false);
 
-				Logger.LogTrace("Logged in.");
+				Logger.LogTrace("Подключился.");
 				cancellationToken.ThrowIfCancellationRequested();
 
 				await client.StartAsync().ConfigureAwait(false);
 
-				Logger.LogTrace("Started.");
+				Logger.LogTrace("Завелся.");
 
 				var channelsAvailable = new TaskCompletionSource<object>();
 				Task ReadyCallback()
@@ -233,9 +233,9 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 			{
 				cancellationToken.ThrowIfCancellationRequested();
 				await client.StopAsync().ConfigureAwait(false);
-				Logger.LogTrace("Stopped.");
+				Logger.LogTrace("Остановлен.");
 				await client.LogoutAsync().ConfigureAwait(false);
-				Logger.LogDebug("Disconnected!");
+				Logger.LogDebug("Отключен!");
 			}
 			catch (OperationCanceledException)
 			{
@@ -243,7 +243,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 			}
 			catch (Exception e)
 			{
-				Logger.LogWarning(e, "Error disconnecting from discord!");
+				Logger.LogWarning(e, "Ошибка отключения от дискорда!");
 			}
 		}
 
@@ -255,14 +255,14 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 
 			if (!Connected)
 			{
-				Logger.LogWarning("Cannot map channels, provider disconnected!");
+				Logger.LogWarning("Невозможно сопоставить каналы, провайдер отключился!");
 				return Task.FromResult<IReadOnlyCollection<ChannelRepresentation>>(Array.Empty<ChannelRepresentation>());
 			}
 
 			ChannelRepresentation GetModelChannelFromDBChannel(Api.Models.ChatChannel channelFromDB)
 			{
 				if (!channelFromDB.DiscordChannelId.HasValue)
-					throw new InvalidOperationException("ChatChannel missing DiscordChannelId!");
+					throw new InvalidOperationException("ChatChannel не имеет DiscordChannelId!");
 
 				var channelId = channelFromDB.DiscordChannelId.Value;
 				ulong discordChannelId;
@@ -271,7 +271,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 				if (channelId == 0)
 				{
 					connectionName = client.CurrentUser.Username;
-					friendlyName = "(Unmapped accessible channels)";
+					friendlyName = "(Несопоставленные доступные каналы)";
 					discordChannelId = 0;
 				}
 				else
@@ -279,7 +279,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 					var discordChannel = client.GetChannel(channelId);
 					if (!(discordChannel is ITextChannel textChannel))
 					{
-						Logger.LogWarning("Cound not map channel {0}! Incorrect type: {1}", channelId, discordChannel?.GetType());
+						Logger.LogWarning("Не могу запомнить данный канал {0}! Неккоректный тип: {1}", channelId, discordChannel?.GetType());
 						return null;
 					}
 
@@ -297,7 +297,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 					IsPrivateChannel = false,
 					Tag = channelFromDB.Tag
 				};
-				Logger.LogTrace("Mapped channel {0}: {1}", channelModel.RealId, channelModel.FriendlyName);
+				Logger.LogTrace("Записан канао {0}: {1}", channelModel.RealId, channelModel.FriendlyName);
 				return channelModel;
 			}
 
@@ -351,7 +351,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 
 					if (channelCount > 0)
 					{
-						Logger.LogTrace("Dispatched to {0} unmapped channels...", channelCount);
+						Logger.LogTrace("Отправленно на {0} несопаставленных каналов...", channelCount);
 						await Task.WhenAll(tasks).ConfigureAwait(false);
 					}
 
@@ -367,7 +367,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 			{
 				if (e is OperationCanceledException)
 					cancellationToken.ThrowIfCancellationRequested();
-				Logger.LogWarning(e, "Error sending discord message!");
+				Logger.LogWarning(e, "Ошибка отправки сообщения!");
 			}
 		}
 
@@ -390,13 +390,13 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 			{
 				new EmbedFieldBuilder
 				{
-					Name = "BYOND Version",
+					Name = "BYOND Версия",
 					Value = $"{byondVersion.Major}.{byondVersion.Minor}{(byondVersion.Build > 0 ? $".{byondVersion.Build}" : String.Empty)}",
 					IsInline = true
 				},
 				new EmbedFieldBuilder
 				{
-					Name = "Local Commit",
+					Name = "Локальные изменения",
 					Value = localCommitPushed && gitHub
 						? $"[{revisionInformation.CommitSha.Substring(0, 7)}](https://github.com/{gitHubOwner}/{gitHubRepo}/commit/{revisionInformation.CommitSha})"
 						: revisionInformation.CommitSha.Substring(0, 7),
@@ -404,7 +404,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 				},
 				new EmbedFieldBuilder
 				{
-					Name = "Branch Commit",
+					Name = "Глобальные изменения",
 					Value = gitHub
 						? $"[{revisionInformation.OriginCommitSha.Substring(0, 7)}](https://github.com/{gitHubOwner}/{gitHubRepo}/commit/{revisionInformation.OriginCommitSha})"
 						: revisionInformation.OriginCommitSha.Substring(0, 7),
@@ -417,7 +417,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 				.Select(x => new EmbedFieldBuilder
 				{
 					Name = $"#{x.Number}",
-					Value = $"[{x.TitleAtMerge}]({x.Url}) by _[@{x.Author}](https://github.com/{x.Author})_{Environment.NewLine}Commit: [{x.PullRequestRevision.Substring(0, 7)}](https://github.com/{gitHubOwner}/{gitHubRepo}/commit/{x.PullRequestRevision}){(String.IsNullOrWhiteSpace(x.Comment) ? String.Empty : $"{Environment.NewLine}_**{x.Comment}**_")}"
+					Value = $"[{x.TitleAtMerge}]({x.Url}) от _[@{x.Author}](https://github.com/{x.Author})_{Environment.NewLine}Изменение: [{x.PullRequestRevision.Substring(0, 7)}](https://github.com/{gitHubOwner}/{gitHubRepo}/commit/{x.PullRequestRevision}){(String.IsNullOrWhiteSpace(x.Comment) ? String.Empty : $"{Environment.NewLine}_**{x.Comment}**_")}"
 				}));
 
 			var builder = new EmbedBuilder
@@ -429,25 +429,25 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 					IconUrl = "https://avatars0.githubusercontent.com/u/1363778?s=280&v=4"
 				},
 				Color = Color.Gold,
-				Description = "TGS has begun deploying active repository code to production.",
+				Description = "TGS начал компилировать билд и загружать его на сервер.",
 				Fields = fields,
-				Title = "Code Deployment",
+				Title = "Компилирование билда",
 				Footer = new EmbedFooterBuilder
 				{
-					Text = $"In progress...{(estimatedCompletionTime.HasValue ? " ETA" : String.Empty)}"
+					Text = $"В прогрессе...{(estimatedCompletionTime.HasValue ? " ETA" : String.Empty)}"
 				},
 				Timestamp = estimatedCompletionTime
 			};
 
-			Logger.LogTrace("Attempting to post deploy embed to channel {0}...", channelId);
+			Logger.LogTrace("Попытка отправить discord.embed в канал {0}...", channelId);
 			if (!(client.GetChannel(channelId) is IMessageChannel channel))
 			{
-				Logger.LogTrace("Channel ID {0} does not exist or is not an IMessageChannel!", channelId);
+				Logger.LogTrace("ID канала {0} не существует или является IMessageChannel!", channelId);
 				return (errorMessage, dreamMakerOutput) => Task.CompletedTask;
 			}
 
 			var message = await channel.SendMessageAsync(
-				"DM: Deployment in Progress...",
+				"DM: Компилирование билда началось...",
 				false,
 				builder.Build(),
 				new RequestOptions
@@ -458,13 +458,13 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 
 			return async (errorMessage, dreamMakerOutput) =>
 			{
-				var completionString = errorMessage == null ? "Succeeded" : "Failed";
+				var completionString = errorMessage == null ? "Удачно" : "Не удачно";
 				builder.Footer.Text = completionString;
 				builder.Color = errorMessage == null ? Color.Green : Color.Red;
 				builder.Timestamp = DateTimeOffset.Now;
 				builder.Description = errorMessage == null
-					? "The deployment completed successfully and will be available at the next server reboot."
-					: "The deployment failed.";
+					? "Компилирование завершено успешно и будет доступно при следующей перезагрузке сервера."
+					: "Компилирование успешно наебнулось.";
 
 				var showDMOutput = outputDisplayType switch
 				{
@@ -480,7 +480,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 					if (showDMOutput)
 						builder.AddField(new EmbedFieldBuilder
 						{
-							Name = "DreamMaker Output",
+							Name = "DreamMaker логи:",
 							Value = $"```{Environment.NewLine}{dreamMakerOutput}{Environment.NewLine}```"
 						});
 				}
@@ -488,11 +488,11 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 				if (errorMessage != null)
 					builder.AddField(new EmbedFieldBuilder
 					{
-						Name = "Error Message",
+						Name = "Ошибка!",
 						Value = errorMessage
 					});
 
-				var updatedMessage = $"DM: Deployment {completionString}!";
+				var updatedMessage = $"DM: Компилирование {completionString}!";
 				try
 				{
 					await message.ModifyAsync(
@@ -505,7 +505,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 				}
 				catch (Exception ex)
 				{
-					Logger.LogWarning(ex, "Updating deploy embed {0} failed, attempting new post!", message.Id);
+					Logger.LogWarning(ex, "Не удалось обновить развернутую вставку {0}, попытка новой публикации!", message.Id);
 					try
 					{
 						await channel.SendMessageAsync(
@@ -516,7 +516,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 					}
 					catch (Exception ex2)
 					{
-						Logger.LogWarning(ex2, "Posting completion deploy embed failed!");
+						Logger.LogWarning(ex2, "Ошибка завершения развертывания встраивания публикации!");
 					}
 				}
 			};

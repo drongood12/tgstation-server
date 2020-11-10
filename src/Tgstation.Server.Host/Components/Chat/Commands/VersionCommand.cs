@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Tgstation.Server.Host.System;
@@ -14,7 +14,7 @@ namespace Tgstation.Server.Host.Components.Chat.Commands
 		public string Name => "version";
 
 		/// <inheritdoc />
-		public string HelpText => "Displays the tgstation server version";
+		public string HelpText => "Отображает версию сервера tgstation";
 
 		/// <inheritdoc />
 		public bool AdminOnly => false;

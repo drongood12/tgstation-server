@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Tgstation.Server.Host.Components.Byond;
 using Tgstation.Server.Host.Components.Repository;
@@ -70,7 +70,7 @@ namespace Tgstation.Server.Host.Components.Chat.Commands
 		public void SetWatchdog(IWatchdog watchdog)
 		{
 			if (this.watchdog != null)
-				throw new InvalidOperationException("SetWatchdog has already been called!");
+				throw new InvalidOperationException("Набор Watchdog уже вызван!");
 			this.watchdog = watchdog ?? throw new ArgumentNullException(nameof(watchdog));
 		}
 
@@ -78,7 +78,7 @@ namespace Tgstation.Server.Host.Components.Chat.Commands
 		public IReadOnlyList<ICommand> GenerateCommands()
 		{
 			if (watchdog == null)
-				throw new InvalidOperationException("SetWatchdog has not been called!");
+				throw new InvalidOperationException("Набор Watchdog еще не назывался!");
 			return new List<ICommand>
 			{
 				new VersionCommand(assemblyInformationProvider),

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -18,7 +18,7 @@ namespace Tgstation.Server.Host.Components.Chat.Commands
 		public string Name => "revision";
 
 		/// <inheritdoc />
-		public string HelpText => "Display live commit sha. Add --repo to view repository revision";
+		public string HelpText => "Демонстрирует посследнее изменения. Добавьте --repo, чтобы просмотреть версию репозитория";
 
 		/// <inheritdoc />
 		public bool AdminOnly => false;
@@ -52,13 +52,13 @@ namespace Tgstation.Server.Host.Components.Chat.Commands
 				using (var repo = await repositoryManager.LoadRepository(cancellationToken).ConfigureAwait(false))
 				{
 					if (repo == null)
-						return "Repository unavailable!";
+						return "Репозиторий недоступен!";
 					result = repo.Head;
 				}
 			else
 			{
 				if (watchdog.Status == WatchdogStatus.Offline)
-					return "Server offline!";
+					return "Сервер не в сети!";
 				result = watchdog.ActiveCompileJob?.RevisionInformation.CommitSha;
 			}
 

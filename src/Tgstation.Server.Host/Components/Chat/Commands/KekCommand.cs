@@ -1,4 +1,4 @@
-﻿using System.Threading;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Tgstation.Server.Host.Components.Chat.Commands
@@ -11,13 +11,13 @@ namespace Tgstation.Server.Host.Components.Chat.Commands
 		/// <summary>
 		/// kek
 		/// </summary>
-		const string Kek = "kek";
+		const string Kek = "Оборжатся можно блять";
 
 		/// <inheritdoc />
-		public string Name => Kek;
+		public string Name => "kek";
 
 		/// <inheritdoc />
-		public string HelpText => Kek;
+		public string HelpText => "Оборжатся можно блять";
 
 		/// <inheritdoc />
 		public bool AdminOnly => false;
