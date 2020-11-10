@@ -355,7 +355,7 @@ namespace Tgstation.Server.Host.Components.Chat
 					{
 						var helpHandler = GetCommand(splits[0].ToUpperInvariant());
 						if (helpHandler != default)
-							helpText = String.Format(CultureInfo.InvariantCulture, "{0}: {1}{2}", helpHandler.Name, helpHandler.HelpText, helpHandler.AdminOnly ? " - Используется только в админском канале!" : String.Empty);
+							helpText = String.Format(CultureInfo.InvariantCulture, "{0}: {1}{2}", helpHandler.Name, helpHandler.HelpText, helpHandler.AdminOnly ? " - Может использоваться только в каналах администраторов!" : String.Empty);
 						else
 							helpText = UnknownCommandMessage;
 					}
