@@ -374,7 +374,7 @@ namespace Tgstation.Server.Host.Components.Chat
 
 				if (commandHandler.AdminOnly && !message.User.Channel.IsAdminChannel)
 				{
-					await SendMessage("Используйте это в админском канале!", new List<ulong> { message.User.Channel.RealId }, cancellationToken).ConfigureAwait(false);
+					await SendMessage("Используйте это в каналах администраторов!", new List<ulong> { message.User.Channel.RealId }, cancellationToken).ConfigureAwait(false);
 					return;
 				}
 
