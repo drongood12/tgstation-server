@@ -18,7 +18,7 @@ namespace Tgstation.Server.Host.Components.Chat.Commands
 		public string Name => "byond";
 
 		/// <inheritdoc />
-		public string HelpText => "Отображает текущую версию Byond. Используйте --active для версии, используемой в будущих развертываниях.";
+		public string HelpText => "Отображает текущую версию Byond. Используйте --active для вывода версии, используемой в следующий обновлениях.";
 
 		/// <inheritdoc />
 		public bool AdminOnly => false;
