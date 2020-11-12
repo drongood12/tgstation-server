@@ -625,7 +625,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 
 			return (errorMessage, dreamMakerOutput) => SendMessage(
 				channelId,
-				$"DM: Развертывание {(errorMessage == null ? "complete" : "failed")}!",
+				$"DM: Развертывание {(errorMessage == null ? "Удачно" : "Не удачно")}!",
 				cancellationToken);
 		}
 	}

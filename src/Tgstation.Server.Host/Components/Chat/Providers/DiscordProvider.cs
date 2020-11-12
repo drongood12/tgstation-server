@@ -448,7 +448,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 			}
 
 			var message = await channel.SendMessageAsync(
-				"DM: Компилирование билда началось...",
+				"DM: Компилирование началось...",
 				false,
 				builder.Build(),
 				new RequestOptions

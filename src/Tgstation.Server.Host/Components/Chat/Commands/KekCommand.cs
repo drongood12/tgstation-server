@@ -11,13 +11,13 @@ namespace Tgstation.Server.Host.Components.Chat.Commands
 		/// <summary>
 		/// kek
 		/// </summary>
-		const string Kek = "Оборжатся можно блять";
+		const string Kek = "kek";
 
 		/// <inheritdoc />
 		public string Name => "kek";
 
 		/// <inheritdoc />
-		public string HelpText => "Оборжатся можно блять";
+		public string HelpText => "kek";
 
 		/// <inheritdoc />
 		public bool AdminOnly => false;
