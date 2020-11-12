@@ -30,7 +30,7 @@ namespace Tgstation.Server.Host.Components.Chat.Commands
 		public void SetHandler(ICustomCommandHandler handler)
 		{
 			if (this.handler != null)
-				throw new InvalidOperationException("SetHandler () уже вызван!");
+				throw new InvalidOperationException("SetHandler () already called!");
 			this.handler = handler ?? throw new ArgumentNullException(nameof(handler));
 		}
 
@@ -38,7 +38,7 @@ namespace Tgstation.Server.Host.Components.Chat.Commands
 		public Task<string> Invoke(string arguments, ChatUser user, CancellationToken cancellationToken)
 		{
 			if (handler == null)
-				throw new InvalidOperationException("SetHandler () не был вызван!");
+				throw new InvalidOperationException("SetHandler () has not been called!");
 			return handler.HandleChatCommand(Name, arguments, user, cancellationToken);
 		}
 	}

@@ -243,7 +243,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 			}
 			catch (Exception e)
 			{
-				Logger.LogWarning(e, "Ошибка отключения от дискорда!");
+				Logger.LogWarning(e, "Error disconnecting from discord!");
 			}
 		}
 
@@ -255,14 +255,14 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 
 			if (!Connected)
 			{
-				Logger.LogWarning("Невозможно сопоставить каналы, провайдер отключился!");
+				Logger.LogWarning("Cannot map channels, provider disconnected!");
 				return Task.FromResult<IReadOnlyCollection<ChannelRepresentation>>(Array.Empty<ChannelRepresentation>());
 			}
 
 			ChannelRepresentation GetModelChannelFromDBChannel(Api.Models.ChatChannel channelFromDB)
 			{
 				if (!channelFromDB.DiscordChannelId.HasValue)
-					throw new InvalidOperationException("ChatChannel не имеет DiscordChannelId!");
+					throw new InvalidOperationException("ChatChannel missing DiscordChannelId!");
 
 				var channelId = channelFromDB.DiscordChannelId.Value;
 				ulong discordChannelId;
@@ -297,7 +297,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 					IsPrivateChannel = false,
 					Tag = channelFromDB.Tag
 				};
-				Logger.LogTrace("Записан канао {0}: {1}", channelModel.RealId, channelModel.FriendlyName);
+				Logger.LogTrace("Mapped channel {0}: {1}", channelModel.RealId, channelModel.FriendlyName);
 				return channelModel;
 			}
 
@@ -367,7 +367,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 			{
 				if (e is OperationCanceledException)
 					cancellationToken.ThrowIfCancellationRequested();
-				Logger.LogWarning(e, "Ошибка отправки сообщения!");
+				Logger.LogWarning(e, "Error sending discord message!");
 			}
 		}
 
@@ -505,7 +505,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 				}
 				catch (Exception ex)
 				{
-					Logger.LogWarning(ex, "Не удалось обновить развернутую вставку {0}, попытка новой публикации!", message.Id);
+					Logger.LogWarning(ex, "Updating deploy embed {0} failed, attempting new post!", message.Id);
 					try
 					{
 						await channel.SendMessageAsync(
@@ -516,7 +516,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 					}
 					catch (Exception ex2)
 					{
-						Logger.LogWarning(ex2, "Ошибка завершения развертывания встраивания публикации!");
+						Logger.LogWarning(ex2, "Posting completion deploy embed failed!");
 					}
 				}
 			};
