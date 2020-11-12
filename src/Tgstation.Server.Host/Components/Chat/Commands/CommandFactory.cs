@@ -70,7 +70,7 @@ namespace Tgstation.Server.Host.Components.Chat.Commands
 		public void SetWatchdog(IWatchdog watchdog)
 		{
 			if (this.watchdog != null)
-				throw new InvalidOperationException("Набор Watchdog уже вызван!");
+				throw new InvalidOperationException("SetWatchdog has already been called!");
 			this.watchdog = watchdog ?? throw new ArgumentNullException(nameof(watchdog));
 		}
 
@@ -78,7 +78,7 @@ namespace Tgstation.Server.Host.Components.Chat.Commands
 		public IReadOnlyList<ICommand> GenerateCommands()
 		{
 			if (watchdog == null)
-				throw new InvalidOperationException("Набор Watchdog еще не назывался!");
+				throw new InvalidOperationException("SetWatchdog has not been called!");
 			return new List<ICommand>
 			{
 				new VersionCommand(assemblyInformationProvider),
