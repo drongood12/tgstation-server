@@ -145,7 +145,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 				{
 					if (mentionedUs)
 					{
-						Logger.LogTrace("Ignoring mention from {0} ({1}) от {2} ({3}). Канал небыл записан!", e.Channel.Id, e.Channel.Name, e.Author.Id, e.Author.Username);
+						Logger.LogTrace("Ignoring mention from {0} ({1}) от {2} ({3}). Channel not mapped!", e.Channel.Id, e.Channel.Name, e.Author.Id, e.Author.Username);
 
 						// DCT: None available
 						await SendMessage(e.Channel.Id, "Прости мой друг,я не отвечаю в этом канале.Спрашивай м-м-м в другом канале!", default).ConfigureAwait(false);
@@ -191,12 +191,12 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 			{
 				await client.LoginAsync(TokenType.Bot, botToken, true).ConfigureAwait(false);
 
-				Logger.LogTrace("Подключился.");
+				Logger.LogTrace("Logged in.");
 				cancellationToken.ThrowIfCancellationRequested();
 
 				await client.StartAsync().ConfigureAwait(false);
 
-				Logger.LogTrace("Завелся.");
+				Logger.LogTrace("Started.");
 
 				var channelsAvailable = new TaskCompletionSource<object>();
 				Task ReadyCallback()
@@ -233,9 +233,9 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 			{
 				cancellationToken.ThrowIfCancellationRequested();
 				await client.StopAsync().ConfigureAwait(false);
-				Logger.LogTrace("Остановлен.");
+				Logger.LogTrace("Stopped.");
 				await client.LogoutAsync().ConfigureAwait(false);
-				Logger.LogDebug("Отключен!");
+				Logger.LogDebug("Disconnected!");
 			}
 			catch (OperationCanceledException)
 			{
@@ -271,7 +271,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 				if (channelId == 0)
 				{
 					connectionName = client.CurrentUser.Username;
-					friendlyName = "(Несопоставленные доступные каналы)";
+					friendlyName = "(Unmapped accessible channels)";
 					discordChannelId = 0;
 				}
 				else
@@ -279,7 +279,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 					var discordChannel = client.GetChannel(channelId);
 					if (!(discordChannel is ITextChannel textChannel))
 					{
-						Logger.LogWarning("Не могу запомнить данный канал {0}! Неккоректный тип: {1}", channelId, discordChannel?.GetType());
+						Logger.LogWarning("Cound not map channel {0}! Incorrect type: {1}", channelId, discordChannel?.GetType());
 						return null;
 					}
 
@@ -351,7 +351,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 
 					if (channelCount > 0)
 					{
-						Logger.LogTrace("Отправленно на {0} несопаставленных каналов...", channelCount);
+						Logger.LogTrace("Dispatched to {0} unmapped channels...", channelCount);
 						await Task.WhenAll(tasks).ConfigureAwait(false);
 					}
 
