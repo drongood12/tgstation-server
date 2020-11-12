@@ -18,7 +18,7 @@ namespace Tgstation.Server.Host.Components.Chat.Commands
 		public string Name => "revision";
 
 		/// <inheritdoc />
-		public string HelpText => "Демонстрирует посследнее изменения. Добавьте --repo, чтобы просмотреть версию репозитория";
+		public string HelpText => "Демонстрирует последние изменения. Добавьте --repo, чтобы посмотреть версию репозитория";
 
 		/// <inheritdoc />
 		public bool AdminOnly => false;
