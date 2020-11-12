@@ -58,7 +58,7 @@ namespace Tgstation.Server.Host.Components.Chat.Commands
 			else
 			{
 				if (watchdog.Status == WatchdogStatus.Offline)
-					return "Сервер не в сети!";
+					return "Сервер выключен!";
 				result = watchdog.ActiveCompileJob?.RevisionInformation.CommitSha;
 			}
 

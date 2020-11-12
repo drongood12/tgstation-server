@@ -349,7 +349,7 @@ namespace Tgstation.Server.Host.Components.Chat
 								.Where(x => x.CustomCommands != null)
 								.SelectMany(
 									x => x.CustomCommands));
-						helpText = String.Format(CultureInfo.InvariantCulture, "Доступные комманды (Отправьте '?' или 'help' для получения подробносте): {0}", String.Join(", ", allCommands.Select(x => x.Name)));
+						helpText = String.Format(CultureInfo.InvariantCulture, "Доступные комманды (Отправьте '?' или 'help' для получения подробностей): {0}", String.Join(", ", allCommands.Select(x => x.Name)));
 					}
 					else
 					{
@@ -392,7 +392,7 @@ namespace Tgstation.Server.Host.Components.Chat
 				// error bc custom commands should reply about why it failed
 				logger.LogError(e, "Error processing chat command");
 				await SendMessage(
-					"TGS: Команда обработки внутренней ошибки! Проверьте логи сервера!",
+					"TGS: Возникло необработанное исключение! Проверьте логи сервера!",
 					new List<ulong> { message.User.Channel.RealId },
 					cancellationToken)
 					.ConfigureAwait(false);

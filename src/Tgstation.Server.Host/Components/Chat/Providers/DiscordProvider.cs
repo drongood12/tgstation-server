@@ -27,7 +27,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 			get
 			{
 				if (!Connected)
-					throw new InvalidOperationException("Провайдер не подключен...");
+					throw new InvalidOperationException("Provider not connected");
 				return NormalizeMentions(client.CurrentUser.Mention);
 			}
 		}
@@ -116,7 +116,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 			void StartTyping() => typingState = e.Channel.EnterTypingState();
 			try
 			{
-				if (basedMeme && e.Content.Equals("Рабоатет на чем?", StringComparison.OrdinalIgnoreCase))
+				if (basedMeme && e.Content.Equals("Based on what?", StringComparison.OrdinalIgnoreCase))
 				{
 					StartTyping();
 
@@ -145,7 +145,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 				{
 					if (mentionedUs)
 					{
-						Logger.LogTrace("Игнорирую упоминание из {0} ({1}) от {2} ({3}). Канал небыл записан!", e.Channel.Id, e.Channel.Name, e.Author.Id, e.Author.Username);
+						Logger.LogTrace("Ignoring mention from {0} ({1}) от {2} ({3}). Канал небыл записан!", e.Channel.Id, e.Channel.Name, e.Author.Id, e.Author.Username);
 
 						// DCT: None available
 						await SendMessage(e.Channel.Id, "Прости мой друг,я не отвечаю в этом канале.Спрашивай м-м-м в другом канале!", default).ConfigureAwait(false);
