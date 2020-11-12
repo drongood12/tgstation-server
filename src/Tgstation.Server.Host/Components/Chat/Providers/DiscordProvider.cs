@@ -439,10 +439,10 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 				Timestamp = estimatedCompletionTime
 			};
 
-			Logger.LogTrace("Попытка отправить discord.embed в канал {0}...", channelId);
+			Logger.LogTrace("Attempting to post deploy embed to channel {0}...", channelId);
 			if (!(client.GetChannel(channelId) is IMessageChannel channel))
 			{
-				Logger.LogTrace("ID канала {0} не существует или является IMessageChannel!", channelId);
+				Logger.LogTrace("Channel ID {0} does not exist or is not an IMessageChannel!", channelId);
 				return (errorMessage, dreamMakerOutput) => Task.CompletedTask;
 			}
 
@@ -464,7 +464,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 				builder.Timestamp = DateTimeOffset.Now;
 				builder.Description = errorMessage == null
 					? "Компилирование завершено успешно и будет доступно при следующей перезагрузке сервера."
-					: "Компилирование успешно наебнулось.";
+					: "Компилирование завершено неудачно.";
 
 				var showDMOutput = outputDisplayType switch
 				{
