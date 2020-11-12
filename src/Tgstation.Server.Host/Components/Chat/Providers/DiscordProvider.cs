@@ -431,7 +431,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 				Color = Color.Gold,
 				Description = "TGS начал компилировать билд и загружать его на сервер.",
 				Fields = fields,
-				Title = "Компилирование билда",
+				Title = "Компилирование кода",
 				Footer = new EmbedFooterBuilder
 				{
 					Text = $"В прогрессе...{(estimatedCompletionTime.HasValue ? " ETA" : String.Empty)}"
