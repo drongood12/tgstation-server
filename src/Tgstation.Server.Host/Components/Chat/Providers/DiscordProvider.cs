@@ -148,7 +148,8 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 						Logger.LogTrace("Ignoring mention from {0} ({1}) от {2} ({3}). Channel not mapped!", e.Channel.Id, e.Channel.Name, e.Author.Id, e.Author.Username);
 
 						// DCT: None available
-						await SendMessage(e.Channel.Id, "Прости мой друг,я не отвечаю в этом канале.Спрашивай м-м-м в другом канале!", default).ConfigureAwait(false);
+						await SendMessage(e.Channel.Id, "
+Я не отвечаю в этом канале!", default).ConfigureAwait(false);
 					}
 
 					return;
