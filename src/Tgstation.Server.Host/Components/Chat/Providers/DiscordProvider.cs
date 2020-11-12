@@ -435,7 +435,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 				Title = "Компилирование кода",
 				Footer = new EmbedFooterBuilder
 				{
-					Text = $"В прогрессе...{(estimatedCompletionTime.HasValue ? " ETA" : String.Empty)}"
+					Text = $"В процессе...{(estimatedCompletionTime.HasValue ? " ETA" : String.Empty)}"
 				},
 				Timestamp = estimatedCompletionTime
 			};
