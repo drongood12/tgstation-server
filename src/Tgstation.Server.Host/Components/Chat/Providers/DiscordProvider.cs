@@ -145,10 +145,11 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 				{
 					if (mentionedUs)
 					{
-						Logger.LogTrace("Ignoring mention from {0} ({1}) by {2} ({3}). Channel not mapped!", e.Channel.Id, e.Channel.Name, e.Author.Id, e.Author.Username);
+						Logger.LogTrace("Ignoring mention from {0} ({1}) от {2} ({3}). Channel not mapped!", e.Channel.Id, e.Channel.Name, e.Author.Id, e.Author.Username);
 
 						// DCT: None available
-						await SendMessage(e.Channel.Id, "I do not respond to this channel!", default).ConfigureAwait(false);
+						await SendMessage(e.Channel.Id, "
+Я не отвечаю в этом канале!", default).ConfigureAwait(false);
 					}
 
 					return;
@@ -390,13 +391,13 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 			{
 				new EmbedFieldBuilder
 				{
-					Name = "BYOND Version",
+					Name = "BYOND Версия",
 					Value = $"{byondVersion.Major}.{byondVersion.Minor}{(byondVersion.Build > 0 ? $".{byondVersion.Build}" : String.Empty)}",
 					IsInline = true
 				},
 				new EmbedFieldBuilder
 				{
-					Name = "Local Commit",
+					Name = "Локальные изменения",
 					Value = localCommitPushed && gitHub
 						? $"[{revisionInformation.CommitSha.Substring(0, 7)}](https://github.com/{gitHubOwner}/{gitHubRepo}/commit/{revisionInformation.CommitSha})"
 						: revisionInformation.CommitSha.Substring(0, 7),
@@ -404,7 +405,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 				},
 				new EmbedFieldBuilder
 				{
-					Name = "Branch Commit",
+					Name = "Глобальные изменения",
 					Value = gitHub
 						? $"[{revisionInformation.OriginCommitSha.Substring(0, 7)}](https://github.com/{gitHubOwner}/{gitHubRepo}/commit/{revisionInformation.OriginCommitSha})"
 						: revisionInformation.OriginCommitSha.Substring(0, 7),
@@ -417,7 +418,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 				.Select(x => new EmbedFieldBuilder
 				{
 					Name = $"#{x.Number}",
-					Value = $"[{x.TitleAtMerge}]({x.Url}) by _[@{x.Author}](https://github.com/{x.Author})_{Environment.NewLine}Commit: [{x.PullRequestRevision.Substring(0, 7)}](https://github.com/{gitHubOwner}/{gitHubRepo}/commit/{x.PullRequestRevision}){(String.IsNullOrWhiteSpace(x.Comment) ? String.Empty : $"{Environment.NewLine}_**{x.Comment}**_")}"
+					Value = $"[{x.TitleAtMerge}]({x.Url}) от _[@{x.Author}](https://github.com/{x.Author})_{Environment.NewLine}Изменение: [{x.PullRequestRevision.Substring(0, 7)}](https://github.com/{gitHubOwner}/{gitHubRepo}/commit/{x.PullRequestRevision}){(String.IsNullOrWhiteSpace(x.Comment) ? String.Empty : $"{Environment.NewLine}_**{x.Comment}**_")}"
 				}));
 
 			var builder = new EmbedBuilder
@@ -429,12 +430,12 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 					IconUrl = "https://avatars0.githubusercontent.com/u/1363778?s=280&v=4"
 				},
 				Color = Color.Gold,
-				Description = "TGS has begun deploying active repository code to production.",
+				Description = "TGS начал компилировать билд и загружать его на сервер.",
 				Fields = fields,
-				Title = "Code Deployment",
+				Title = "Компилирование кода",
 				Footer = new EmbedFooterBuilder
 				{
-					Text = $"In progress...{(estimatedCompletionTime.HasValue ? " ETA" : String.Empty)}"
+					Text = $"В процессе...{(estimatedCompletionTime.HasValue ? " ETA" : String.Empty)}"
 				},
 				Timestamp = estimatedCompletionTime
 			};
@@ -447,7 +448,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 			}
 
 			var message = await channel.SendMessageAsync(
-				"DM: Deployment in Progress...",
+				"DM: Компилирование началось...",
 				false,
 				builder.Build(),
 				new RequestOptions
@@ -458,13 +459,13 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 
 			return async (errorMessage, dreamMakerOutput) =>
 			{
-				var completionString = errorMessage == null ? "Succeeded" : "Failed";
+				var completionString = errorMessage == null ? "Удачно" : "Не удачно";
 				builder.Footer.Text = completionString;
 				builder.Color = errorMessage == null ? Color.Green : Color.Red;
 				builder.Timestamp = DateTimeOffset.Now;
 				builder.Description = errorMessage == null
-					? "The deployment completed successfully and will be available at the next server reboot."
-					: "The deployment failed.";
+					? "Компилирование завершено успешно и будет доступно при следующей перезагрузке сервера."
+					: "Компилирование завершено неудачно.";
 
 				var showDMOutput = outputDisplayType switch
 				{
@@ -480,7 +481,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 					if (showDMOutput)
 						builder.AddField(new EmbedFieldBuilder
 						{
-							Name = "DreamMaker Output",
+							Name = "DreamMaker логи:",
 							Value = $"```{Environment.NewLine}{dreamMakerOutput}{Environment.NewLine}```"
 						});
 				}
@@ -488,11 +489,11 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 				if (errorMessage != null)
 					builder.AddField(new EmbedFieldBuilder
 					{
-						Name = "Error Message",
+						Name = "Ошибка!",
 						Value = errorMessage
 					});
 
-				var updatedMessage = $"DM: Deployment {completionString}!";
+				var updatedMessage = $"DM: Компилирование {completionString}!";
 				try
 				{
 					await message.ModifyAsync(

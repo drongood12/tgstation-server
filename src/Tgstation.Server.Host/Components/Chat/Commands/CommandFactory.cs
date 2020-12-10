@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Tgstation.Server.Host.Components.Byond;
 using Tgstation.Server.Host.Components.Repository;

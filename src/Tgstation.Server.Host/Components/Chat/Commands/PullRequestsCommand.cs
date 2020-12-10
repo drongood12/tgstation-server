@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -21,7 +21,7 @@ namespace Tgstation.Server.Host.Components.Chat.Commands
 		public string Name => "prs";
 
 		/// <inheritdoc />
-		public string HelpText => "Display live test merge pull request numbers. Add --repo to view repository test merges";
+		public string HelpText => "Отображение номеров запросов на объединение в реальном времени. Добавьте --repo для просмотра слияния тестов репозитория";
 
 		/// <inheritdoc />
 		public bool AdminOnly => false;
@@ -73,7 +73,7 @@ namespace Tgstation.Server.Host.Components.Chat.Commands
 				using (var repo = await repositoryManager.LoadRepository(cancellationToken).ConfigureAwait(false))
 				{
 					if (repo == null)
-						return "Repository unavailable!";
+						return "Репозиторий недоступен!";
 					head = repo.Head;
 				}
 
@@ -96,7 +96,7 @@ namespace Tgstation.Server.Host.Components.Chat.Commands
 			else
 			{
 				if (watchdog.Status == WatchdogStatus.Offline)
-					return "Server offline!";
+					return "Сервер выключен!";
 				results = watchdog.ActiveCompileJob?.RevisionInformation.ActiveTestMerges.Select(x => x.TestMerge).ToList() ?? new List<Models.TestMerge>();
 			}
 

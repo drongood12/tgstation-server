@@ -611,7 +611,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 				channelId,
 				String.Format(
 					CultureInfo.InvariantCulture,
-					"DM: Deploying revision: {0}{1}{2} BYOND Version: {3}{4}",
+					"DM: Развертывание ревизии: {0}{1}{2} BYOND Версия: {3}{4}",
 					commitInsert,
 					testmergeInsert,
 					remoteCommitInsert,
@@ -625,7 +625,7 @@ namespace Tgstation.Server.Host.Components.Chat.Providers
 
 			return (errorMessage, dreamMakerOutput) => SendMessage(
 				channelId,
-				$"DM: Deployment {(errorMessage == null ? "complete" : "failed")}!",
+				$"DM: Развертывание {(errorMessage == null ? "Удачно" : "Не удачно")}!",
 				cancellationToken);
 		}
 	}

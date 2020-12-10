@@ -314,7 +314,7 @@ namespace Tgstation.Server.Host.Components.Chat
 				if (splits.Count == 0)
 				{
 					// just a mention
-					await SendMessage("Hi!", new List<ulong> { message.User.Channel.RealId }, cancellationToken).ConfigureAwait(false);
+					await SendMessage("Привет!", new List<ulong> { message.User.Channel.RealId }, cancellationToken).ConfigureAwait(false);
 					return;
 				}
 
@@ -336,7 +336,7 @@ namespace Tgstation.Server.Host.Components.Chat
 					return handler;
 				}
 
-				const string UnknownCommandMessage = "Unknown command! Type '?' or 'help' for available commands.";
+				const string UnknownCommandMessage = "Неопознаная комманда! Выберете '?' или 'help' для получения списка доступных комманд.";
 
 				if (command == "HELP" || command == "?")
 				{
@@ -349,13 +349,13 @@ namespace Tgstation.Server.Host.Components.Chat
 								.Where(x => x.CustomCommands != null)
 								.SelectMany(
 									x => x.CustomCommands));
-						helpText = String.Format(CultureInfo.InvariantCulture, "Available commands (Type '?' or 'help' and then a command name for more details): {0}", String.Join(", ", allCommands.Select(x => x.Name)));
+						helpText = String.Format(CultureInfo.InvariantCulture, "Доступные комманды (Отправьте '?' или 'help' для получения подробностей): {0}", String.Join(", ", allCommands.Select(x => x.Name)));
 					}
 					else
 					{
 						var helpHandler = GetCommand(splits[0].ToUpperInvariant());
 						if (helpHandler != default)
-							helpText = String.Format(CultureInfo.InvariantCulture, "{0}: {1}{2}", helpHandler.Name, helpHandler.HelpText, helpHandler.AdminOnly ? " - May only be used in admin channels" : String.Empty);
+							helpText = String.Format(CultureInfo.InvariantCulture, "{0}: {1}{2}", helpHandler.Name, helpHandler.HelpText, helpHandler.AdminOnly ? " - Может использоваться только в каналах администраторов!" : String.Empty);
 						else
 							helpText = UnknownCommandMessage;
 					}
@@ -374,7 +374,7 @@ namespace Tgstation.Server.Host.Components.Chat
 
 				if (commandHandler.AdminOnly && !message.User.Channel.IsAdminChannel)
 				{
-					await SendMessage("Use this command in an admin channel!", new List<ulong> { message.User.Channel.RealId }, cancellationToken).ConfigureAwait(false);
+					await SendMessage("Используйте это в каналах администраторов!", new List<ulong> { message.User.Channel.RealId }, cancellationToken).ConfigureAwait(false);
 					return;
 				}
 
@@ -392,7 +392,7 @@ namespace Tgstation.Server.Host.Components.Chat
 				// error bc custom commands should reply about why it failed
 				logger.LogError(e, "Error processing chat command");
 				await SendMessage(
-					"TGS: Internal error processing command! Check server logs!",
+					"TGS: Возникло необработанное исключение! Проверьте логи сервера!",
 					new List<ulong> { message.User.Channel.RealId },
 					cancellationToken)
 					.ConfigureAwait(false);
@@ -796,7 +796,7 @@ namespace Tgstation.Server.Host.Components.Chat
 		/// <inheritdoc />
 		public Task HandleRestart(Version updateVersion, CancellationToken cancellationToken)
 		{
-			var message = updateVersion == null ? "TGS: Restart requested..." : String.Format(CultureInfo.InvariantCulture, "TGS: Updating to version {0}...", updateVersion);
+			var message = updateVersion == null ? "TGS: Требуется перезапуск" : String.Format(CultureInfo.InvariantCulture, "TGS: Обновление до версии {0}...", updateVersion);
 			List<ulong> wdChannels;
 			lock (mappedChannels) // so it doesn't change while we're using it
 				wdChannels = mappedChannels.Select(x => x.Key).ToList();
